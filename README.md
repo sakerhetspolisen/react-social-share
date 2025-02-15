@@ -82,12 +82,17 @@ For example, you can create a client wrapper for the share component as follows:
 // src/components/share-on-social.tsx
 "use client";
 
+import dynamic from "next/dynamic";
 import type React from "react";
-import ShareOnSocialBase from "react-share-on-social";
-type ShareOnSocialProps = React.ComponentProps<typeof ShareOnSocialBase>;
+
+const LazyShareOnSocialBase = dynamic(() => import("react-share-on-social"), {
+	ssr: false,
+});
+
+type ShareOnSocialProps = React.ComponentProps<typeof LazyShareOnSocialBase>;
 
 export default function ShareOnSocial(props: ShareOnSocialProps) {
-	return <ShareOnSocialBase {...props} />;
+	return <LazyShareOnSocialBase {...props} />;
 }
 ```
 
