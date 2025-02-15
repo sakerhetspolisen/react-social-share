@@ -72,6 +72,32 @@ const Example = () => {
 };
 ```
 
+## Using with Next.js
+
+When using `react-share-on-social` in a Next.js project, you need to ensure you wrap the component in a client component because Next.js **server components** cannot use browser-specific APIs such as the Web Share API.
+
+For example, you can create a client wrapper for the share component as follows:
+
+```tsx
+// src/components/share-on-social.tsx
+"use client";
+
+import dynamic from "next/dynamic";
+import type React from "react";
+
+const LazyShareOnSocialBase = dynamic(() => import("react-share-on-social"), {
+	ssr: false,
+});
+
+type ShareOnSocialProps = React.ComponentProps<typeof LazyShareOnSocialBase>;
+
+export default function ShareOnSocial(props: ShareOnSocialProps) {
+	return <LazyShareOnSocialBase {...props} />;
+}
+```
+
+Place the above file in your project and import the `ShareOnSocial` component from this wrapper in your Next.js pages or components. This ensures that it runs on the client side, enabling the native sharing and fallback functionality.
+
 ## Required props
 
 | Property       | Type               | Description                                                                             |
